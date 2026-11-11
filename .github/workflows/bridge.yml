@@ -42,6 +42,7 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt-get install ca-certificates -y
+          sudo sed -i 's/azure.archive.ubuntu.com/archive.ubuntu.com/g' /etc/apt/sources.list
           sudo apt-get update -y
           sudo apt-get install -y \
             clang \
