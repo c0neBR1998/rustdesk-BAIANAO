@@ -3,6 +3,8 @@ name: Windows Build (Baianao)
 # Builds only the Windows version and publishes the installer (.exe/.msi)
 # as a pre-release named by "tag" (default: baianao-teste).
 on:
+  push:
+    branches: [fix-branding]
   workflow_dispatch:
     inputs:
       tag:
@@ -16,5 +18,5 @@ jobs:
     secrets: inherit
     with:
       upload-artifact: true
-      upload-tag: ${{ inputs.tag }}
+      upload-tag: ${{ inputs.tag || 'baianao-teste' }}
       windows-only: true
