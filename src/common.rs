@@ -1224,7 +1224,7 @@ pub async fn do_check_software_update() -> hbb_common::ResultType<()> {
 
 #[inline]
 pub fn get_app_name() -> String {
-    "Baianão".to_owned()
+    hbb_common::config::APP_NAME.read().unwrap().clone()
 }
 
 #[inline]
@@ -2506,7 +2506,13 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
     ThrottledInterval::new(i)
 }
 
+/// Brand name. ASCII only: it is used for the Windows service name, install
+/// path, registry keys, IPC names and the `baianao://` URI scheme.
+pub const BRAND_APP_NAME: &str = "Baianao";
+
 pub fn load_custom_client() {
+    // Set before reading custom.txt, so a signed custom config can still override it.
+    *config::APP_NAME.write().unwrap() = BRAND_APP_NAME.to_owned();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
