@@ -1,0 +1,20 @@
+name: Windows Build (Baianao)
+
+# Builds only the Windows version and publishes the installer (.exe/.msi)
+# as a pre-release named by "tag" (default: baianao-teste).
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Pre-release tag to publish the installer to"
+        type: string
+        default: "baianao-teste"
+
+jobs:
+  run-windows-build:
+    uses: ./.github/workflows/flutter-build.yml
+    secrets: inherit
+    with:
+      upload-artifact: true
+      upload-tag: ${{ inputs.tag }}
+      windows-only: true
