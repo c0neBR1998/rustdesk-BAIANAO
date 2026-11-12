@@ -11,7 +11,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_windows/webview_windows.dart';
 
 /// Endereço do sistema de chamados. Deixe vazio para esconder o cartão.
-const String kTicketCenterUrl = 'https://chamados.exemplo.com.br';
+const String kTicketCenterUrl =
+    'https://www.universobaianao.com.br/portal/colaborador/solicitacoes/chamados-ti/central';
 
 class TicketCenterCard extends StatelessWidget {
   const TicketCenterCard({Key? key}) : super(key: key);
