@@ -2510,9 +2510,32 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 /// path, registry keys, IPC names and the `baianao://` URI scheme.
 pub const BRAND_APP_NAME: &str = "Baianao";
 
+/// Servidor RustDesk próprio do Baianão (hbbs/hbbr). Pode ser trocado no build
+/// pelas variáveis BAIANAO_RENDEZVOUS_SERVER / BAIANAO_RELAY_SERVER / BAIANAO_KEY.
+const BAIANAO_DEFAULT_SERVER: &str = "187.44.236.58";
+const BAIANAO_DEFAULT_KEY: &str = "wf6a6R+8si424xN2gPnRRvhMlMiQYakQxADsw2gs3Vo=";
+
+fn build_env_or(value: Option<&str>, fallback: &str) -> String {
+    match value {
+        Some(v) if !v.trim().is_empty() => v.trim().to_owned(),
+        _ => fallback.to_owned(),
+    }
+}
+
+fn load_baianao_server_defaults() {
+    let server = build_env_or(option_env!("BAIANAO_RENDEZVOUS_SERVER"), BAIANAO_DEFAULT_SERVER);
+    let relay = build_env_or(option_env!("BAIANAO_RELAY_SERVER"), &server);
+    let key = build_env_or(option_env!("BAIANAO_KEY"), BAIANAO_DEFAULT_KEY);
+    let mut defaults = config::DEFAULT_SETTINGS.write().unwrap();
+    defaults.insert("custom-rendezvous-server".to_owned(), server);
+    defaults.insert("relay-server".to_owned(), relay);
+    defaults.insert("key".to_owned(), key);
+}
+
 pub fn load_custom_client() {
     // Set before reading custom.txt, so a signed custom config can still override it.
     *config::APP_NAME.write().unwrap() = BRAND_APP_NAME.to_owned();
+    load_baianao_server_defaults();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());

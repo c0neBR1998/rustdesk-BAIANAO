@@ -65,6 +65,11 @@ env:
   UPLOAD_ARTIFACT: "${{ inputs.upload-artifact }}"
   PUBLISH_UPDATE_METADATA: "${{ inputs.publish-update-metadata }}"
   SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}-2"
+  # Servidor RustDesk proprio do Baianao (Settings > Secrets and variables > Actions > Variables).
+  # Lidas em tempo de compilacao por load_baianao_server_defaults() em src/common.rs.
+  BAIANAO_RENDEZVOUS_SERVER: "${{ vars.BAIANAO_RENDEZVOUS_SERVER }}"
+  BAIANAO_RELAY_SERVER: "${{ vars.BAIANAO_RELAY_SERVER }}"
+  BAIANAO_KEY: "${{ vars.BAIANAO_KEY }}"
 
 jobs:
   validate-update-metadata-keys:
